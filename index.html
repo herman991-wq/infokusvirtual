@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentasi Online - Screen Share</title>
+    <!-- Tailwind CSS untuk Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Mencegah scroll pada body agar terasa seperti aplikasi native */
+        body {
+            overflow: hidden;
+            background-color: #f9fafb; /* Nuansa Putih/Abu Terang (Tailwind gray-50) */
+        }
+        
+        /* Transisi halus untuk tombol */
+        .btn-transition {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-gray-900 h-screen flex flex-col font-sans bg-gray-50">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white p-4 shadow-sm flex justify-between items-center z-10 border-b border-gray-200">
+        <div class="flex items-center space-x-3">
+            <!-- Ikon Logo Sekolah -->
+            <div class="bg-gray-100 p-1 rounded-full flex items-center justify-center h-10 w-10 overflow-hidden border border-gray-200">
+                <!-- Ganti link 'src' di bawah dengan link/URL logo sekolah Anda -->
+                <img src="https://placehold.co/100x100/ffffff/1e40af?text=SMA" alt="Logo Sekolah" class="object-cover w-full h-full" onerror="this.style.display='none'">
+            </div>
+            <h1 class="text-xl font-bold tracking-wide text-gray-800">Presentasi Sekolah</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium border border-red-200 flex items-center">
+                <span class="w-2 h-2 rounded-full bg-red-500 mr-2 animate-pulse"></span>
+                Live
+            </span>
+            <div class="text-sm text-gray-500 flex items-center space-x-2">
+                <span>ID Ruangan: <span class="font-mono text-gray-800 font-semibold" id="room-id">X9-B2M-4K</span></span>
+                <button onclick="copyInviteLink()" class="p-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-md border border-blue-200 transition-colors" title="Salin Link Penonton">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Area Konten Utama -->
+    <main class="flex-1 flex overflow-hidden">
+        
+        <!-- Area Video / Presentasi -->
+        <div class="flex-1 relative bg-gray-100 flex justify-center items-center p-4">
+            
+            <!-- Placeholder saat tidak ada yang dibagikan -->
+            <div id="placeholder" class="flex flex-col items-center justify-center text-gray-400 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <h2 class="text-2xl font-semibold text-gray-700 mb-2">Belum ada presentasi</h2>
+                <p class="max-w-md text-gray-500">Klik tombol "Bagikan Layar" di bawah untuk mulai mempresentasikan jendela, tab, atau seluruh layar komputer Anda.</p>
+            </div>
+
+            <!-- Elemen Video (Disembunyikan secara default) -->
+            <video id="presentation-video" autoplay playsinline muted class="hidden max-w-full max-h-full rounded-lg shadow-xl object-contain border border-gray-300 bg-black"></video>
+            
+        </div>
+
+        <!-- Sidebar / Daftar Peserta (Mockup Visual) -->
+        <div class="w-80 bg-white border-l border-gray-200 hidden md:flex flex-col">
+            <div class="p-4 border-b border-gray-200">
+                <h3 class="font-semibold text-lg text-gray-800">Peserta (3)</h3>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                <!-- Peserta 1 -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">A</div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Anda (Host)</p>
+                            <p class="text-xs text-green-500">Terhubung</p>
+                        </div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <!-- Peserta 2 -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold">B</div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Budi Santoso</p>
+                            <p class="text-xs text-gray-500">Menonton</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Peserta 3 -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-yellow-500 text-white flex items-center justify-center font-bold">C</div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Citra Lestari</p>
+                            <p class="text-xs text-gray-500">Menonton</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Kontrol Bawah / Bottom Bar -->
+    <footer class="bg-white border-t border-gray-200 p-4">
+        <div class="max-w-3xl mx-auto flex justify-center items-center space-x-6">
+            
+            <!-- Mock Audio Button -->
+            <button class="flex flex-col items-center text-gray-600 hover:text-gray-900 btn-transition group">
+                <div class="w-12 h-12 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center mb-1 border border-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                </div>
+                <span class="text-xs font-medium">Bungkam</span>
+            </button>
+
+            <!-- Mock Video Button -->
+            <button class="flex flex-col items-center text-gray-600 hover:text-gray-900 btn-transition group">
+                <div class="w-12 h-12 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center mb-1 border border-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span class="text-xs font-medium">Kamera</span>
+            </button>
+
+            <!-- Tombol Utama: Mulai Berbagi Layar -->
+            <button id="btn-start-share" class="flex flex-col items-center text-blue-600 hover:text-blue-700 btn-transition group">
+                <div class="w-14 h-14 rounded-full bg-blue-50 group-hover:bg-blue-100 border border-blue-200 flex items-center justify-center mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold">Bagikan Layar</span>
+            </button>
+
+            <!-- Tombol Utama: Berhenti Berbagi (Sembunyi secara default) -->
+            <button id="btn-stop-share" class="hidden flex flex-col items-center text-red-600 hover:text-red-700 btn-transition group">
+                <div class="w-14 h-14 rounded-full bg-red-50 group-hover:bg-red-100 border border-red-200 flex items-center justify-center mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold">Hentikan</span>
+            </button>
+
+            <!-- Mock End Call Button -->
+            <button class="flex flex-col items-center text-red-600 hover:text-red-700 btn-transition group">
+                <div class="w-12 h-12 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center mb-1 shadow-md shadow-red-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 14.5c0-.4.3-.5.7-.5h3.6c.4 0 .7.3.7.8v3.4c0 .4-.3.5-.7.5H5.7a.8.8 0 01-.7-.8v-3.4zM20.5 5c.4 0 .5.3.5.7v3.6c0 .4-.3.7-.8.7h-3.4c-.4 0-.5-.3-.5-.7V5.7c0-.4.3-.7.8-.7h3.4z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
+                    </svg>
+                </div>
+                <span class="text-xs font-medium">Tutup</span>
+            </button>
+
+        </div>
+    </footer>
+
+    <!-- Pesan / Notifikasi Kustom -->
+    <div id="notification" class="fixed top-20 right-4 bg-white border-l-4 border-blue-500 text-gray-800 p-4 rounded shadow-xl transform translate-x-full transition-transform duration-300 z-50 flex items-start hidden">
+        <div class="mr-3 text-blue-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        <div>
+            <h4 class="font-bold text-gray-900" id="notif-title">Pemberitahuan</h4>
+            <p class="text-sm text-gray-600" id="notif-message">Pesan disini.</p>
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi Elemen UI
+        const btnStartShare = document.getElementById('btn-start-share');
+        const btnStopShare = document.getElementById('btn-stop-share');
+        const videoElement = document.getElementById('presentation-video');
+        const placeholder = document.getElementById('placeholder');
+        
+        let screenStream = null;
+
+        // Fungsi Notifikasi Kustom (Pengganti alert)
+        function showNotification(title, message, isError = false) {
+            const notif = document.getElementById('notification');
+            const notifTitle = document.getElementById('notif-title');
+            const notifMessage = document.getElementById('notif-message');
+            
+            notifTitle.innerText = title;
+            notifMessage.innerText = message;
+            
+            notif.classList.remove('hidden');
+            
+            if (isError) {
+                notif.classList.replace('border-blue-500', 'border-red-500');
+                notif.querySelector('svg').classList.replace('text-blue-500', 'text-red-500');
+            } else {
+                notif.classList.replace('border-red-500', 'border-blue-500');
+                notif.querySelector('svg').classList.replace('text-red-500', 'text-blue-500');
+            }
+
+            // Animate in
+            setTimeout(() => {
+                notif.classList.remove('translate-x-full');
+            }, 10);
+
+            // Hide after 4 seconds
+            setTimeout(() => {
+                notif.classList.add('translate-x-full');
+                setTimeout(() => notif.classList.add('hidden'), 300);
+            }, 4000);
+        }
+
+        // Fungsi Memulai Screen Share
+        async function startScreenShare() {
+            try {
+                // Meminta akses ke layar pengguna
+                screenStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: {
+                        cursor: "always",
+                        displaySurface: "monitor" // Bisa window, browser, atau monitor
+                    },
+                    audio: false // Set true jika ingin menangkap audio sistem (tergantung dukungan browser)
+                });
+
+                // Memasukkan stream ke elemen video
+                videoElement.srcObject = screenStream;
+                
+                // Menyesuaikan UI
+                placeholder.classList.add('hidden');
+                videoElement.classList.remove('hidden');
+                btnStartShare.classList.add('hidden');
+                btnStopShare.classList.remove('hidden');
+
+                showNotification("Berhasil", "Anda sekarang membagikan layar Anda.");
+
+                // Mendengarkan jika pengguna menghentikan share dari bar bawaan browser (Stop Sharing button)
+                screenStream.getVideoTracks()[0].addEventListener('ended', () => {
+                    stopScreenShare();
+                });
+
+            } catch (err) {
+                console.error("Gagal membagikan layar: ", err);
+                if (err.name === 'NotAllowedError') {
+                    showNotification("Akses Ditolak", "Izin berbagi layar dibatalkan.", true);
+                } else {
+                    showNotification("Error", "Browser tidak mendukung atau terjadi kesalahan.", true);
+                }
+            }
+        }
+
+        // Fungsi Menghentikan Screen Share
+        function stopScreenShare() {
+            if (screenStream) {
+                // Hentikan semua track video/audio
+                screenStream.getTracks().forEach(track => track.stop());
+                screenStream = null;
+            }
+
+            // Bersihkan elemen video
+            videoElement.srcObject = null;
+            
+            // Kembalikan UI ke semula
+            videoElement.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+            btnStopShare.classList.add('hidden');
+            btnStartShare.classList.remove('hidden');
+
+            showNotification("Dihentikan", "Berbagi layar telah dihentikan.");
+        }
+
+        // Event Listeners
+        btnStartShare.addEventListener('click', startScreenShare);
+        btnStopShare.addEventListener('click', stopScreenShare);
+
+        // Fungsi Menyalin Link Undangan Penonton
+        function copyInviteLink() {
+            const roomId = document.getElementById('room-id').innerText;
+            // Membuat link (menggunakan URL saat ini ditambah parameter ID Ruangan)
+            const inviteLink = `${window.location.origin}${window.location.pathname}?room=${roomId}`;
+            
+            // Menyalin teks ke clipboard (mendukung format iFrame)
+            const tempInput = document.createElement("input");
+            tempInput.value = inviteLink;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // Memunculkan Notifikasi sukses
+            showNotification("Link Disalin!", "Link untuk penonton berhasil disalin. Silakan bagikan ke grup/audiens Anda.");
+        }
+
+    </script>
+</body>
+</html>
